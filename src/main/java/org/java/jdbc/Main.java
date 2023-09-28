@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Scanner;
 
 public class Main {
 
@@ -15,8 +16,7 @@ public class Main {
 		
 		try (Connection con = DriverManager.getConnection(url, user, password)) {
 
-			//inserire il nome del METODO
-			
+			//inserire il nome del METODO 
 			readNations(con);
 			
 		} catch (Exception e) {
@@ -28,16 +28,28 @@ public class Main {
 	
 	private static final void readNations(Connection con) {
 		
-		final String sql = " SELECT c.country_id, c.name, r.name, c2.name"
-				+ " FROM countries c "
-				+ " JOIN regions r "
-				+ " ON r.region_id = c.region_id"
-				+ " JOIN continents c2 "
-				+ " ON c2.continent_id = r.continent_id "
-				+ " ORDER BY c.name;";
+		//Le sequenze di escape "\r\n" inserite alla fine di ogni riga sono caratteri speciali che rappresentano un ritorno a capo (line feed) e un avanzamento del cursore all'inizio della riga successiva (carriage return).
+		
+		final String sql = " SELECT c.country_id, c.name, r.name, c2.name \r\n"
+				+ " FROM countries c \r\n"
+				+ " JOIN regions r \r\n"
+				+ " ON r.region_id = c.region_id \r\n"
+				+ " JOIN continents c2 \r\n"
+				+ " ON c2.continent_id = r.continent_id \r\n"
+				+ " WHERE c.name LIKE ?;";
+		
+		
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.print("Inserire una nazione: ");
+		String userNazione = sc.nextLine();
+
+		final String parametro = "%" + userNazione +  "%";
+		
 		
 		try {
-			PreparedStatement ps = con.prepareStatement(sql);			
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, parametro);
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
