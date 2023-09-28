@@ -16,13 +16,13 @@ public class Main {
 		
 		try (Connection con = DriverManager.getConnection(url, user, password)) {
 
-			//inserire il nome del METODO 
+			//inserire il nome del METODO
+			
 			readNations(con);
 			
 		} catch (Exception e) {
 			System.out.println("Errore di connessione: " + e.getMessage());
 		}
-		System.out.println("\n----------------------------------\n");
 		System.out.println("The end");
 	}
 	
@@ -37,15 +37,15 @@ public class Main {
 				+ " JOIN continents c2 \r\n"
 				+ " ON c2.continent_id = r.continent_id \r\n"
 				+ " WHERE c.name LIKE ?;";
-		
-		
+
+
 		Scanner sc = new Scanner(System.in);
-		
+
 		System.out.print("Inserire una nazione: ");
 		String userNazione = sc.nextLine();
+		System.out.println("\n");
 
 		final String parametro = "%" + userNazione +  "%";
-		
 		
 		try {
 			PreparedStatement ps = con.prepareStatement(sql);
@@ -65,11 +65,29 @@ public class Main {
 				System.out.println("Nome continente: " + nameContinents);
 				
 				System.out.println("\n------------------------------\n");
+				
 			}
 			
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+		
+		//DETTAGLI NAZIONE
+		
+		System.out.print("Inserire l\' ID della nazione interessata per scoprire ulteriori dettagli: ");
+		int idNazione = Integer.valueOf(sc.nextLine());
+		
+		final String sqlLingue = " SELECT `language` \r\n"
+				+ " FROM countries c  \r\n"
+				+ " JOIN regions r \r\n"
+				+ " ON r.region_id = c.region_id \r\n"
+				+ " JOIN continents c2 \r\n"
+				+ " ON c2.continent_id = r.continent_id \r\n"
+				+ " JOIN country_languages cl  \r\n"
+				+ " ON c.country_id = cl.country_id  \r\n"
+				+ " JOIN languages l \r\n"
+				+ " ON l.language_id = cl.language_id \r\n"
+				+ " WHERE c.country_id = ? \r\n";
 
 	}
 	

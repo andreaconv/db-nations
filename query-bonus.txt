@@ -1,0 +1,30 @@
+QUERY per le lingue parlate
+
+SELECT c.country_id, c.name name_county, r.name name_region, c2.name name_continents, `language` 
+FROM countries c 
+	JOIN regions r 
+	ON r.region_id = c.region_id
+	JOIN continents c2 
+	ON c2.continent_id = r.continent_id
+-- passaggio per la lingua
+	JOIN country_languages cl 
+	ON c.country_id = cl.country_id 
+	JOIN languages l 
+	ON l.language_id = cl.language_id 
+WHERE c.country_id = 107;
+
+--------------------------------------------------------------------------------------
+
+QUERY per i dettagli 
+
+SELECT c.country_id, c.name name_county, r.name name_region, c2.name name_continents, `year`, population, gdp 
+FROM countries c 
+	JOIN regions r 
+	ON r.region_id = c.region_id
+	JOIN continents c2 
+	ON c2.continent_id = r.continent_id
+-- passaggio per dettagli
+	JOIN country_stats cs 
+	ON cs.country_id = c.country_id 
+WHERE c.country_id = 107
+ORDER BY cs.`year` DESC;
