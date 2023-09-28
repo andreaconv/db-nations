@@ -36,7 +36,28 @@ public class Main {
 				+ " ON c2.continent_id = r.continent_id "
 				+ " ORDER BY c.name;";
 		
-		
+		try {
+			PreparedStatement ps = con.prepareStatement(sql);			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				
+				int countryId = rs.getInt("c.country_id");
+				String nameCounty = rs.getString("c.name");
+				String nameRegion = rs.getString("r.name");
+				String nameContinents = rs.getString("c2.name");
+				
+				System.out.println("Id continente: " + countryId + "\n");
+				System.out.println("Nome nazione: " + nameCounty);
+				System.out.println("Nome regione: " + nameRegion);
+				System.out.println("Nome continente: " + nameContinents);
+				
+				System.out.println("\n------------------------------\n");
+			}
+			
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 
 	}
 	
